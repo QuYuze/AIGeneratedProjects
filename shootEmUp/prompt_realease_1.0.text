@@ -1,0 +1,620 @@
+v0.1:##########################################################
+
+Scope constraints (important):
+
+No frameworks or libraries
+
+No TypeScript
+
+No build tools
+
+No assets (use simple rectangles or circles)
+
+Keep code simple, readable, and well-commented
+
+Required features:
+
+An index.html file with a <canvas> element and basic styling
+
+A main game loop using requestAnimationFrame
+
+Fixed canvas size (e.g. 800×600)
+
+Clear separation between:
+
+update logic
+
+render logic
+
+A Player object:
+
+Positioned near the bottom center
+
+Moves with arrow keys or WASD
+
+Stays within canvas bounds
+
+A simple input handler (key down / key up)
+
+Explicitly exclude (do NOT implement yet):
+
+Shooting
+
+Enemies
+
+Collision detection
+
+Scoring
+
+Sound
+
+Game states (start/game over)
+
+Code quality requirements:
+
+Use ES6 classes or plain objects (your choice, but be consistent)
+
+Avoid over-abstraction and unnecessary patterns
+
+Keep everything understandable to a junior engineer
+
+Output format:
+
+Provide the full contents of index.html and game.js
+
+Include brief comments explaining the game loop and player movement
+
+v0.2:#################################################################
+
+Extend the existing Canvas shoot ’em up code with player shooting.
+
+Requirements:
+
+Press Space to shoot
+
+Bullets move straight upward
+
+Use simple rectangles or small circles for bullets
+
+Bullets are removed when they leave the screen
+
+Design constraints:
+
+Create a Bullet class or bullet objects
+
+Store bullets in an array
+
+Shooting rate should be limited (e.g. one bullet every 200ms)
+
+Do NOT add enemies yet
+
+Code quality:
+
+Integrate bullets cleanly into the existing update/render loop
+
+Avoid global variables where possible
+
+Keep logic readable and minimal
+
+Output:
+
+Update only the necessary files
+
+v0.3 ###########################################################################
+Add basic enemies to the existing Canvas shoot ’em up.
+
+Requirements:
+
+Enemies spawn at the top of the canvas
+
+Spawn one enemy every ~1 second
+
+Enemies move straight downward
+
+Use simple rectangles or circles
+
+Remove enemies when they leave the screen
+
+Design constraints:
+
+Create an Enemy class
+
+Use an enemy spawner timer
+
+Keep movement simple (no patterns yet)
+
+Explicitly exclude:
+
+Enemy shooting
+
+Collisions
+
+Scoring
+
+Output:
+
+Update only relevant files
+
+Explain enemy spawn logic briefly
+
+v0.4#######################################################
+
+Prompt v4 — Bullet vs Enemy Collision
+
+Implement collision detection between player bullets and enemies.
+
+Requirements:
+
+Use simple axis-aligned bounding box (AABB) collision detection
+
+When a bullet hits an enemy:
+
+Remove the bullet
+
+Remove the enemy
+
+Design constraints:
+
+Implement collision logic in a clear, centralized place
+
+Avoid nested loops where possible, but keep code simple
+
+Explicitly exclude:
+
+Player damage
+
+Explosions
+
+Score
+
+Output:
+
+Show the collision function
+
+Briefly explain how collisions are checked each frame
+
+v0.5#############################################################
+Prompt v5 — Player Lives & Damage
+
+Add player damage and lives to the game.
+
+Requirements:
+
+Player starts with 3 lives
+
+If an enemy collides with the player:
+
+Player loses 1 life
+
+Enemy is removed
+
+Player cannot move or shoot for a short invincibility window (e.g. 1 second)
+
+Design constraints:
+
+Visually indicate invincibility (e.g. blinking)
+
+Keep logic simple and readable
+
+Explicitly exclude:
+
+Game over screen
+
+Restart logic
+
+Output:
+
+Explain how invincibility timing works
+
+v0.6########################################################
+Requirements:
+
+Increase score when an enemy is destroyed
+
+Display score in the top-left corner
+
+Use canvas text rendering
+
+Design constraints:
+
+Score logic should not be mixed with rendering logic
+
+Output:
+
+Show how score is updated and rendered
+
+v0.7###############################################
+Add game over and restart functionality.
+
+Requirements:
+
+Game ends when player lives reach zero
+
+Display “Game Over” text centered on screen
+
+Press Enter to restart the game
+
+Design constraints:
+
+Introduce a simple gameState variable
+
+Avoid complex state machines
+
+Output:
+
+Explain how game state transitions work
+
+v0.8 ######################################################
+Add lightweight visual polish without assets.
+
+Options (pick at least two):
+
+Screen shake on hit
+
+Simple explosion circles
+
+Scrolling background stars
+
+Bullet trails
+
+Constraints:
+
+No images or external assets
+
+Keep performance in mind
+
+Output:
+
+Explain the visual effect implementation briefly
+
+v0.8.1 #############################################
+i did not see scroller background stars
+
+Uncaught ReferenceError: Cannot access 'Star' before initialization
+
+v0.9 #####################################################
+Requirements:
+
+Introduce a simple gameState with at least:
+
+"intro"
+
+"playing"
+
+"help"
+
+The game should start in the "intro" state
+
+Intro screen behavior:
+
+Display the game title centered on the screen
+
+Show two selectable menu options:
+
+Start
+
+Help
+
+Highlight the currently selected option
+
+Use keyboard controls:
+
+Up / Down arrows to change selection
+
+Enter to confirm
+
+Start option:
+
+Switch gameState to "playing"
+
+Initialize or reset game data as needed
+
+Help screen behavior:
+
+Display basic instructions:
+
+Movement keys
+
+Shoot key
+
+How to return to intro
+
+Press Escape (or Enter) to return to the intro screen
+
+Design constraints:
+
+Render menus using canvas text only (no HTML overlays)
+
+Keep intro/help rendering separate from gameplay rendering
+
+Avoid complex UI frameworks or state machines
+
+Keep code readable and minimal
+
+Explicitly exclude:
+
+Mouse input
+
+Animations or sound
+
+Settings or difficulty selection
+
+Output:
+
+Update only the necessary files
+
+Briefly explain how menu input and gameState transitions are handled
+
+v0.10####################################################
+
+Extend the existing Canvas shoot ’em up by adding a pause feature with a pause screen overlay.
+
+Requirements:
+
+Add a new gameState value: "paused"
+
+While in "playing":
+
+Press P (or Escape) to toggle pause
+
+When paused:
+
+Game update logic stops (player, enemies, bullets do not move)
+
+Game render remains visible in the background
+
+Pause screen behavior:
+
+Draw a semi-transparent overlay over the game
+
+Display centered text:
+
+“Paused”
+
+“Press P to Resume”
+
+Do not clear or reset game data when pausing
+
+Input constraints:
+
+Pause toggle should be ignored in non-playing states (intro, help, game over)
+
+Prevent rapid toggling (simple key press debounce)
+
+Design constraints:
+
+Implement pause logic by conditionally skipping the update step, not by stopping the render loop
+
+Keep pause rendering separate from gameplay rendering
+
+Avoid adding new global variables unless necessary
+
+Explicitly exclude:
+
+Pause menu options
+
+Sound handling
+
+Time scaling
+
+Output:
+
+Update only the necessary files
+
+Briefly explain how the pause toggle and update skipping work
+
+v0.11#################################################################
+Extend the existing Canvas shoot ’em up by enhancing the pause feature into a pause menu.
+
+Requirements:
+
+Add or extend the gameState to include:
+
+"paused"
+
+While in "playing":
+
+Press P (or Escape) to pause the game
+
+Pause behavior:
+
+Game update logic is stopped while paused
+
+Game rendering remains visible in the background
+
+Game data is preserved while paused
+
+Pause menu UI:
+
+Render a semi-transparent overlay over the game
+
+Display a centered Pause Menu with three options:
+
+Continue (default selection)
+
+Restart
+
+End Game
+
+Highlight the currently selected option
+
+Menu controls:
+
+Up / Down arrows to change selection
+
+Enter to confirm selection
+
+Continue is selected by default whenever pause is entered
+
+Menu actions:
+
+Continue:
+
+Resume gameplay and return to "playing"
+
+Restart:
+
+Reset all gameplay state (player, enemies, bullets, score, lives)
+
+Start a new game in "playing"
+
+End Game:
+
+Exit the current game and return to the "intro" screen
+
+Input constraints:
+
+Pause menu input should only be active in "paused" state
+
+Prevent rapid toggling of pause (simple key press debounce)
+
+Design constraints:
+
+Do not stop the render loop; pause by skipping the update step
+
+Keep pause menu rendering separate from gameplay rendering
+
+Reuse existing input handling where possible
+
+Avoid complex state machines or UI frameworks
+
+Explicitly exclude:
+
+Mouse input
+
+Animations or sound effects
+
+Settings or confirmation dialogs
+
+Output:
+
+Update only the necessary files
+
+Briefly explain:
+
+How menu selection is handled
+
+How game state resets differ between Restart and End Game
+
+v0.12##################################################
+
+Extend the existing pause menu by adding a confirmation step for the End Game option.
+
+Requirements:
+
+Introduce a new gameState or sub-state for confirmation, for example:
+
+"confirmEnd"
+
+(or a pause menu mode flag, if preferred)
+
+Selecting End Game from the pause menu should not immediately exit the game
+
+Confirmation screen behavior:
+
+Display a confirmation message centered on screen:
+
+“End current game?”
+
+Show two selectable options:
+
+Yes
+
+No
+
+Default selection should be No
+
+Controls:
+
+Up / Down arrows to change selection
+
+Enter to confirm
+
+Escape should cancel and return to the pause menu
+
+Actions:
+
+Yes:
+
+End the current game
+
+Reset gameplay state
+
+Return to the "intro" screen
+
+No:
+
+Return to the pause menu
+
+Preserve all gameplay state
+
+Design constraints:
+
+Use the same semi-transparent pause overlay for the confirmation screen
+
+Keep confirmation rendering separate from gameplay rendering
+
+Reuse existing menu rendering and input handling logic where possible
+
+Avoid deeply nested conditionals or complex state machines
+
+Explicitly exclude:
+
+Mouse input
+
+Sound effects
+
+Additional confirmation dialogs
+
+Output:
+
+Update only the necessary files
+
+Briefly explain:
+
+How confirmation state transitions work
+
+How gameplay state is preserved or reset depending on choice
+
+v0.13 ####################################################
+Display the player’s remaining lives as a number
+
+Text format example:
+
+Lives: 3
+
+Render the life counter in the top-left corner of the screen
+
+Use red text to draw attention
+
+Integration constraints:
+
+Life display must reflect the existing player lives state
+
+The number updates immediately when the player loses or gains a life
+
+Life rendering should be part of the UI / HUD layer
+
+Design constraints:
+
+Use ctx.fillText for rendering
+
+Choose a readable font size and weight
+
+Do not hardcode the initial number of lives into rendering logic
+
+Avoid mixing gameplay logic with UI rendering
+
+Explicitly exclude:
+
+Icons or images
+
+Animations or flashing effects
+
+Sound effects
+
+Output:
+
+Update only the necessary files
+
+Briefly explain how the life counter stays synchronized with player state

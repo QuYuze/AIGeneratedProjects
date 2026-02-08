@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>ShootEmUp (Skeleton)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        background: #111;
+        color: #ddd;
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      }
+      .wrap {
+        display: grid;
+        place-items: center;
+        height: 100%;
+      }
+      canvas {
+        background: #000;
+        border: 1px solid #444;
+      }
+      .hint {
+        margin-top: 8px;
+        font-size: 14px;
+        color: #aaa;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div>
+        <!-- Fixed-size canvas -->
+        <canvas id="game" width="800" height="600"></canvas>
+        <div class="hint">Move: Arrow Keys or WASD</div>
+      </div>
+    </div>
+    <!-- Game script -->
+    <script src="game.js"></script>
+  </body>
+</html>
