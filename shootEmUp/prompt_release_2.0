@@ -1,0 +1,232 @@
+v0.1******************************************************
+
+Refactor the existing Canvas shoot ’em up to use mouse-based controls for player movement, menu selection, and firing.
+
+Overall goals:
+
+Centralize mouse input handling
+
+Keep keyboard support optional but not required
+
+Avoid breaking existing game logic or state handling
+
+Player Movement (Mouse)
+
+Requirements:
+
+Player ship follows the mouse X position smoothly
+
+Player Y position remains fixed (near bottom of screen)
+
+Clamp movement to canvas bounds
+
+Movement should feel responsive but not jittery
+
+Constraints:
+
+Do not teleport instantly to mouse if smoothing already exists
+
+Use canvas-relative mouse coordinates
+
+Firing (Mouse)
+
+Requirements:
+
+Left mouse click fires bullets
+
+Respect existing firing cooldown
+
+Holding mouse button should allow continuous firing (if cooldown permits)
+
+Constraints:
+
+Reuse existing bullet and shooting logic
+
+Do not duplicate shooting code
+
+Menu Navigation (Mouse)
+
+Requirements:
+
+Support mouse interaction for:
+
+Intro screen
+
+Help screen
+
+Pause menu
+
+End Game confirmation
+
+Hovering over a menu option highlights it
+
+Left click selects the hovered option
+
+Constraints:
+
+Menu hitboxes should be clearly defined (rectangular regions)
+
+Menu rendering and menu input handling should remain separated
+
+Avoid DOM elements; use canvas-only interaction
+
+Input Architecture
+
+Design constraints:
+
+Introduce a centralized mouse input handler:
+
+Mouse position
+
+Button pressed / released
+
+Route input based on gameState
+
+Avoid state-specific event listeners if possible
+
+Keep input logic readable and minimal
+
+Explicitly exclude:
+
+Touch or mobile support
+
+Mouse wheel input
+
+Cursor hiding or custom cursors
+
+Output:
+
+Update only the necessary files
+
+Briefly explain:
+
+How mouse coordinates are translated to canvas space
+
+How menu hit detection works
+
+How firing cooldown is preserved after refactor
+
+v0.2**********************************************
+
+Refactor the existing Canvas shoot ’em up so that the player avatar follows the mouse position instead of being fixed near the bottom of the screen.
+
+Movement behavior:
+
+Player position should smoothly follow the mouse X and Y coordinates
+
+Movement should feel responsive but not jittery
+
+Clamp the player’s position within canvas bounds
+
+Smoothing constraints:
+
+Do not instantly teleport to the mouse position
+
+Use simple linear interpolation (lerp) or velocity-based movement
+
+Keep movement logic easy to reason about
+
+Input constraints:
+
+Use existing centralized mouse input handler
+
+Player movement should only update during the "playing" game state
+
+Gameplay constraints:
+
+Preserve existing collision logic and firing behavior
+
+Ensure player hitbox stays accurate after movement changes
+
+Design constraints:
+
+Keep movement logic inside the Player update method
+
+Avoid adding new global state
+
+Do not break keyboard input if it still exists
+
+Explicitly exclude:
+
+Aiming or rotation
+
+Acceleration curves or physics engines
+
+Touch support
+
+Output:
+
+Update only the necessary files
+
+Briefly explain how smoothing is implemented and how bounds are enforced
+
+v0.3****************************************************
+Extend the existing Canvas shoot ’em up by adding enemy shooting functionality.
+
+Enemy shooting behavior:
+
+Enemies periodically fire bullets toward the player
+
+Shooting interval should be configurable (e.g. one shot every 1–2 seconds)
+
+Not all enemies need to shoot at the same time
+
+Enemy bullets:
+
+Create a separate EnemyBullet (or reuse Bullet with a flag)
+
+Enemy bullets:
+
+Move toward the player’s position at the time of firing
+
+Have a constant speed
+
+Remove enemy bullets when:
+
+They leave the screen
+
+They hit the player
+
+Collision behavior:
+
+When an enemy bullet collides with the player:
+
+Player loses 1 life
+
+Bullet is removed
+
+Respect existing invincibility logic (no repeated damage)
+
+Design constraints:
+
+Keep enemy shooting logic inside the Enemy update or a clearly related system
+
+Do not mix enemy bullet logic with player bullet logic unnecessarily
+
+Reuse existing collision detection utilities
+
+Avoid hardcoding player references inside bullets if possible
+
+Gameplay constraints:
+
+Enemy bullets should be visually distinct from player bullets (e.g. different color)
+
+Shooting should feel fair (no instant unavoidable shots)
+
+Explicitly exclude:
+
+Bullet patterns (no spreads or waves yet)
+
+Sound effects
+
+Difficulty scaling changes
+
+Output:
+
+Update only the necessary files
+
+Briefly explain:
+
+How enemy firing timing is handled
+
+How direction toward the player is calculated

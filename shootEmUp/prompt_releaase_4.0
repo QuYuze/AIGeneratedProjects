@@ -1,0 +1,154 @@
+v0.1****************************************************
+Implement a power-up system where power-ups are category-based pickups that increase player ability levels, with progress-based level caps and probability-controlled drops.
+
+Core Concept (Important)
+
+Power-ups themselves have no levels
+
+Each power-up belongs to one of three categories
+
+Picking up a power-up increases the corresponding ability level by +1
+
+Ability levels are capped by game progress
+
+Power-Up Categories & Effects
+
+There are three power-up categories:
+
+Bullet Amount (Spread)
+
+Each level adds +2 bullets
+
+Bullets fire in a cone spread
+
+Bullet Damage
+
+Each level increases bullet damage by +50
+
+Bullet Speed
+
+Each level increases bullet speed incrementally
+
+Each category has a maximum of 3 ability levels.
+
+Progress-Based Ability Level Caps
+
+Ability levels are limited by enemy kill progress:
+
+Progress Tier	Enemies Destroyed	Max Ability Level
+Tier 1	≥ 2	Level 1
+Tier 2	≥ 30	Level 2
+Tier 3	≥ 100	Level 3
+
+A player cannot increase an ability beyond the currently unlocked progress tier.
+
+Drop Eligibility Rules
+
+When an enemy is destroyed:
+
+Determine the current progress tier based on total enemies destroyed
+
+Build a list of eligible power-up categories:
+
+Ability level for that category is below the progress-based max
+
+If no categories are eligible, no power-up can drop
+
+Otherwise, a power-up may drop, based on drop probability
+
+⚠️ Important:
+
+A category stops dropping if its ability level has reached the current progress cap
+
+Other categories can still drop if they are below the cap
+
+Drop Probability
+
+If at least one category is eligible:
+
+Progress Tier	Drop Chance
+Tier 1	20%
+Tier 2	10%
+Tier 3	5%
+
+Roll once per enemy death
+
+If the roll succeeds, randomly select one eligible category
+
+Power-Up Entity Behavior
+
+Power-up spawns at the enemy’s death position
+
+Power-up falls downward slowly
+
+On player collision:
+
+Increase the corresponding ability level by +1
+
+Clamp to progress-based maximum
+
+Remove the power-up entity
+
+Gameplay Integration
+
+Bullet behavior must update dynamically based on ability levels
+
+Ability effects stack incrementally and predictably
+
+No sudden or exponential scaling
+
+UI / HUD Requirements
+
+Display all three ability levels in the top-left corner
+
+Use golden-colored text
+
+Example:
+
+Power:
+Spread: 2
+Damage: 1
+Speed: 3
+
+
+UI must update immediately on pickup.
+
+Architecture Constraints
+
+Centralize configuration:
+
+Progress thresholds
+
+Drop probabilities
+
+Ability caps
+
+Do not embed drop logic inside enemy classes
+
+Reuse existing collision systems
+
+Keep systems modular and readable
+
+Explicitly exclude:
+
+Temporary buffs or timers
+
+Animations or sound effects
+
+Visual flair beyond basic rendering
+
+Multiple power-up items per pickup
+
+Output:
+
+Update only required files
+
+Briefly explain:
+
+How eligible categories are determined
+
+How progress tier is calculated
+
+How ability levels affect bullet logic
+
+

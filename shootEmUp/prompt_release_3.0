@@ -1,0 +1,174 @@
+v0.1******************************************
+Add a simple image asset loading system to the existing Canvas shoot ’em up.
+
+Requirements:
+
+Load image assets using JavaScript Image()
+
+Support at least:
+
+Player sprite
+
+Enemy sprite(s)
+
+Track loading completion with a simple ready flag
+
+Fail gracefully:
+
+If an image is not loaded, fall back to existing shape-based rendering
+
+Design constraints:
+
+Centralize asset loading logic (e.g. assets.js or similar)
+
+Do not change gameplay, movement, or collision logic
+
+Avoid introducing build tools or external libraries
+
+Explicitly exclude:
+
+Audio loading
+
+Sprite animations
+
+Texture atlases
+
+Output:
+
+Update only necessary files
+
+Briefly explain how asset readiness is checked
+
+v0.2******************************************************************
+Enemy HP rules:
+
+Each enemy has a numeric hp value
+
+Initial HP for every enemy: 100
+
+Each player bullet hit deals 150 damage
+
+Collision behavior changes:
+
+When a bullet hits an enemy:
+
+Reduce enemy HP by 50
+
+Remove the bullet
+
+Only remove the enemy when HP ≤ 0
+
+Visual / feedback requirements:
+
+Enemy should remain visible when damaged but not destroyed
+
+(Optional but preferred) Brief visual feedback on hit:
+
+Color flash
+
+Short opacity change
+
+Design constraints:
+
+Add HP as a property of the Enemy entity
+
+Keep collision detection logic largely unchanged
+
+Avoid hardcoding damage values directly inside collision loops
+
+Do not alter enemy movement or shooting behavior
+
+Code quality constraints:
+
+Damage application should be explicit (e.g. enemy.takeDamage(amount))
+
+Keep logic readable and easy to extend for future enemy types
+
+Explicitly exclude:
+
+HP bars
+
+Different enemy HP values
+
+Damage upgrades
+
+Score balancing changes
+
+Output:
+
+Update only the necessary files
+
+Briefly explain:
+
+How enemy HP is initialized
+
+How damage is applied and checked for destruction
+
+v0.3**********************************************************
+Add a high score system to the existing Canvas shoot ’em up.
+
+High score behavior:
+
+Track the highest score achieved across play sessions
+
+Persist the high score using browser localStorage
+
+Load the saved high score when the game starts
+
+Update rules:
+
+When a game ends:
+
+If the current score is higher than the saved high score, update and save it
+
+High score should represent the last recorded best score, not a per-session value
+
+UI requirements:
+
+Display the high score in the top-right corner of the canvas
+
+Text format example:
+
+High Score: 1250
+
+Use a readable font and color distinct from the life counter
+
+Design constraints:
+
+High score logic must be separate from rendering logic
+
+Encapsulate localStorage access in a small utility or helper function
+
+Rendering should gracefully handle the case where no high score exists yet
+
+Do not block gameplay if localStorage is unavailable
+
+State integration:
+
+High score should remain visible during:
+
+Playing
+
+Paused
+
+Game over screens
+
+High score should not reset on restart unless explicitly overwritten by a higher score
+
+Explicitly exclude:
+
+Multiple score tables
+
+Player names or initials
+
+Server-side storage
+
+Output:
+
+Update only the necessary files
+
+Briefly explain:
+
+When the high score is saved
+
+How localStorage failures are handled safely

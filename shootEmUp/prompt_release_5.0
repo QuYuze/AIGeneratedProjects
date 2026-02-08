@@ -1,0 +1,514 @@
+v0.1************************************************
+
+xtend the game with progressive enemy behaviors and enemy types to balance increasing player power.
+
+The system must be kill-count driven, deterministic, and compatible with the existing power-up system.
+
+Enemy Types Overview
+1️⃣ Shooter (Existing Enemy)
+
+Rename the original enemy to Shooter
+
+Behavior:
+
+Shoots as currently implemented
+
+Uses existing enemy assets
+
+Continues to spawn throughout the game
+
+2️⃣ Horizontal Shooters (After 15 Kills)
+
+Unlock condition: after 15 enemies destroyed
+
+Spawn behavior:
+
+Shooters can now appear from left or right edges
+
+Move horizontally across the screen
+
+Shooting behavior:
+
+Same as normal Shooters
+
+Asset:
+
+Same as Shooter (reuse existing enemy asset)
+
+3️⃣ Rusher (After 30 Kills)
+
+Unlock condition: after 30 enemies destroyed
+
+Enemy name: Rusher
+
+Stats:
+
+HP: 200
+
+Speed: slightly faster than Shooter
+
+Behavior:
+
+Flies directly toward the player’s current position
+
+Does not shoot
+
+Initial spawn pattern:
+
+Appear from the top of the screen
+
+Spawn in horizontal lines of 3
+
+Asset:
+
+Use green placeholder asset
+
+AI:
+
+Simple vector movement toward player position
+
+4️⃣ Advanced Rusher Spawns (After 50 Kills)
+
+Unlock condition: after 50 enemies destroyed
+
+Additional behavior:
+
+Rushers may now spawn from:
+
+Upper-left corner
+
+Upper-right corner
+
+Movement:
+
+Same targeting behavior as normal Rushers
+
+Elite Enemy System
+🧠 Elite Shooter (Mini-Boss)
+
+Spawn condition: every 30 enemies destroyed
+
+Example: 30, 60, 90, etc.
+
+Enemy name: EliteShooter
+
+Persistence:
+
+Does not despawn
+
+Stays on screen until killed
+
+Stats:
+
+HP = 500 × (sum of current player power-up levels)
+
+Size:
+
+Larger sprite
+
+Larger hitbox
+
+Asset:
+
+Orange placeholder asset
+
+Elite Shooter Attack Modes
+
+Elite Shooter has two attack modes and must alternate between them.
+
+Mode 1 — Bullet Chain
+
+Fires a chain of 10 normal bullets
+
+Uses standard bullet logic
+
+After firing twice, must switch modes
+
+Mode 2 — Rusher Spawn
+
+Spawns 2 Rushers
+
+Spawned Rushers:
+
+Appear near the Elite Shooter
+
+Are stunned for 1 second
+
+Do not move during stun
+
+After stun, follow normal Rusher rules
+
+After spawning Rushers twice, must switch modes
+
+Rewards & Effects
+Elite Shooter Defeat Rewards
+
+When an Elite Shooter is destroyed:
+
+Guaranteed power-up drop
+
+Grant +1 extra life
+
+Display screen message:
+
+Text: “EXTRA LIFE!!!!!”
+
+Position: Top of the screen
+
+Style: Blazing / visually emphasized (simple text effects only)
+
+Assets & Visual Rules
+
+Player, Shooter, and Horizontal Shooter:
+
+Use assets from the existing assets/ folder
+
+Rusher:
+
+Green placeholder asset
+
+Elite Shooter:
+
+Orange placeholder asset
+
+No animations required
+
+No sound effects required
+
+Architecture Constraints
+
+Enemy progression must be driven by total enemies destroyed
+
+Enemy spawning logic must be centralized
+
+Do not hardcode thresholds inside enemy classes
+
+Elite logic must not block normal enemy spawning
+
+Reuse collision, rendering, and update loops
+
+Explicitly Exclude
+
+Boss phases
+
+Timers outside of the 1-second rusher stun
+
+New UI systems beyond the extra-life message
+
+Complex pathfinding
+
+Output Requirements
+
+Update only necessary files
+
+Briefly explain:
+
+How enemy progression tiers are calculated
+
+How Elite Shooter mode switching is enforced
+
+How Elite HP scales with player power
+
+v0.2******************************************************************
+Prompt — Enemy Spawn & Elite Gating Logic Update
+
+Extend the existing enemy progression system with elite gating rules and spawn position constraints.
+
+This prompt modifies spawning logic only and must integrate cleanly with the current enemy system.
+
+Elite Shooter Gating Rules
+Single-Elite Constraint
+
+At any time, only one EliteShooter may exist on screen
+
+If an Elite Shooter is alive, no new Elite Shooter may spawn, even if kill thresholds are met
+
+Elite Respawn Logic (Important)
+
+When an Elite Shooter is destroyed:
+
+Record the enemy kill count at the moment of death
+
+The next Elite Shooter may spawn only after 30 additional enemies are destroyed
+
+This rule applies regardless of the current total kill count
+
+Example:
+
+Elite dies at 67 kills
+
+Next Elite may spawn at 97 kills
+
+Not at 90, even though 90 is a multiple of 30
+
+Enemy Spawn Position Constraints
+Shooter & Horizontal Shooter
+
+Shooters must never spawn in the lower half of the screen
+
+Applies to:
+
+Vertical spawns (top-down)
+
+Horizontal spawns (left/right)
+
+Valid spawn region:
+
+Upper 50% of the canvas only
+
+Rusher Spawn Constraints
+
+Rushers spawned normally or by Elite Shooter:
+
+May spawn anywhere specified by their rules
+
+Are not restricted by the shooter upper-half rule
+
+Implementation Notes
+
+Elite spawn tracking must be state-based, not frame-based
+
+Use explicit flags / counters:
+
+eliteAlive
+
+killsAtLastEliteDeath
+
+Do not rely on modulo math for Elite spawning
+
+Spawn position clamping should be centralized in the spawner logic
+
+Explicitly Exclude
+
+UI changes
+
+Balance tweaks
+
+Spawn animations
+
+Difficulty scaling changes beyond this logic
+
+Output Requirements
+
+Modify only enemy spawning logic
+
+Briefly explain:
+
+How elite respawn timing is enforced
+
+How spawn bounds are applied consistently
+
+v0.3******************************************************************
+Prompt — Fix Invincibility Blink & Extend Duration (Canvas)
+
+Refactor the player hit / invincibility system to fix movement during blinking and extend the invincibility period.
+
+Requirements
+
+Movement during invincibility
+
+While the player is blinking (invincible), player movement must remain fully responsive
+
+Do not block or freeze update or render logic
+
+Blink effect should be purely visual (toggle opacity or visibility)
+
+Invincibility Duration
+
+Extend the invincibility period to 3 seconds
+
+Ensure the timer starts immediately after the player is hit
+
+Ensure collision logic correctly ignores damage only during this period
+
+Blinking Effect
+
+Maintain the current blinking pattern
+
+Do not let the blink “stick” or pause the player
+
+Continue rendering bullets, movement, and other gameplay updates normally
+
+Design Constraints
+
+Keep invincibility and blinking logic separate from movement logic
+
+Avoid introducing global delays or setTimeout that freeze gameplay
+
+Timer should be frame-based or delta-time-based, not blocking
+
+Keep code modular for easy adjustments of duration or blink frequency
+
+Output Requirements
+
+Update only player / collision / invincibility logic
+
+Briefly explain:
+
+How movement remains active during invincibility
+
+How the blink effect is applied without affecting gameplay
+
+How the 3-second duration is enforced
+
+v0.4***************************************************************
+Prompt — Limit On-Screen Enemies Based on Kill Count (Canvas)
+
+Refactor the enemy spawning system to limit the number of enemies on screen depending on the current total kills.
+
+Requirements
+Enemy Count Caps
+
+Current kills < 5
+
+Maximum 2 enemies may be present on screen at any time
+
+Current kills < 10
+
+Maximum 5 enemies may be present on screen at any time
+
+Current kills ≥ 10
+
+No artificial cap (existing progression rules apply)
+
+Applies to all normal enemies (Shooters, Horizontal Shooters, etc.)
+
+Do not affect Rushers or Elite Shooter spawns (they follow separate rules)
+
+Implementation Notes
+
+Centralize enemy count check in the spawn manager or update loop
+
+New enemies spawn only if total enemies on screen < cap
+
+Spawn logic must respect:
+
+Enemy types
+
+Spawn bounds (upper half of the screen)
+
+Elite / Rusher rules
+
+Ensure cap checks update each frame so enemies are allowed as old ones are destroyed
+
+Design Constraints
+
+Do not block gameplay updates
+
+Keep code modular — caps should be easy to adjust
+
+Avoid magic numbers inside enemy classes — use constants
+
+Output Requirements
+
+Update only enemy spawning logic
+
+Briefly explain:
+
+How the on-screen cap is enforced per kill threshold
+
+How it integrates with existing enemy progression rules
+
+v0.5**********************************************************************
+Prompt — Elite Shooter Movement & Rapid-Fire Update (Canvas)
+
+Refactor the EliteShooter behavior to improve AI movement and shooting while keeping all other progression and spawn rules unchanged.
+
+Requirements
+1️⃣ Movement Update
+
+Current: Elite Shooter is stationary
+
+New: Elite Shooter moves randomly across the entire canvas
+
+Movement is continuous and smooth
+
+Can reach any part of the canvas, including the bottom half
+
+Avoid collisions with canvas boundaries
+
+Must not interfere with Elite Shooter attack mode timing or spawning logic
+
+2️⃣ Shooting Mode 1 Update
+
+Current: Fires 1–2 bullets per mode
+
+New: Rapid-fire sequence
+
+Fires 10 bullets in quick succession
+
+Very short cooldown between each of the 10 bullets
+
+After 10 bullets fired, a 3-second cooldown before next Mode 1 sequence
+
+Mode switching rules remain:
+
+After Mode 1 fires twice, switch to Mode 2 (spawn Rushers)
+
+Bullet behavior otherwise remains unchanged
+
+3️⃣ Shooting Mode 2
+
+No changes
+
+Continue to spawn 2 Rushers per activation, with 1-second stun before they start moving
+
+4️⃣ Design Constraints
+
+Movement logic must not block rendering or player interaction
+
+Shooting logic must remain frame-rate independent
+
+Maintain existing HP scaling, mode alternation, and reward logic
+
+5️⃣ Output Requirements
+
+Update only Elite Shooter movement and Mode 1 firing logic
+
+Briefly explain:
+
+How random movement is handled safely across the canvas
+
+How the rapid-fire sequence and cooldown are implemented
+
+How Mode 1/Mode 2 alternation remains consistent
+
+v0.6*************************************************************
+Prompt — Shooter Stop Shooting at Lower Screen Zone (Canvas)
+
+Update the behavior of normal enemies (“Shooters”) so that they stop shooting when they descend below a certain vertical threshold.
+
+Requirements
+
+Behavioral Change
+
+Shooter enemies continue moving as usual
+
+Stop firing bullets once their y-position reaches the lower 25% of the canvas
+
+Movement and collisions remain unaffected
+
+Threshold Definition
+
+Lower 25% of canvas = y >= canvas.height * 0.75
+
+Shooting should resume only if they move back above the threshold (if ever applicable)
+
+This ensures enemies near the player do not spam bullets
+
+Design Constraints
+
+Do not affect other enemy types (Elite Shooter, Rusher, Horizontal Shooter)
+
+Keep shooter AI modular — only shooting logic is conditionally disabled
+
+No new global variables; use per-enemy state
+
+Output Requirements
+
+Update only Shooter update / shooting logic
+
+Briefly explain how the shooting condition is applied based on y-position
+
+
+

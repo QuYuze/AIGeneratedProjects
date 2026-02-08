@@ -1,0 +1,188 @@
+v0.1********************************************
+
+mplement the complete enemy progression system, Elite Shooter rules, spawn caps, player life, and difficulty alerts for the Canvas shoot ’em up game.
+
+1️⃣ Player Life
+
+Initial life: 5
+
+Existing extra-life mechanics remain unchanged
+
+2️⃣ Enemy Spawn Rate & Density
+Rushers & Shooters
+
+After 100 kills: spawn rate increases
+
+After 300 kills: no more normal Rushers or Shooters
+
+Spawn rules:
+
+Shooters obey upper-half screen restriction
+
+Rushers follow normal movement rules
+
+Early Game Density Caps:
+
+Kills < 5 → max 2 enemies on screen
+
+Kills < 10 → max 5 enemies on screen
+
+3️⃣ Elite Shooter Rules
+Pre-100 Kills: Regular Elite Shooter
+
+Spawn frequency: every 30 kills
+
+Max on screen: 1
+
+Behavior:
+
+Random movement
+
+Shooting modes: rapid-fire bullets + Rusher spawn
+
+Rewards: power-up + extra life
+
+HP scaling: based on player power levels
+
+150–299 Kills: Regular Elite Shooter
+
+Spawn frequency: every 30 kills
+
+Max on screen: 3
+
+Behavior: same as pre-100 rules
+
+Rewards: power-up + extra life
+
+Post-300 Kills: Dual Elite System
+Type A — Replacement Elites
+
+Spawn condition: replace Shooters
+
+Behavior: move like normal Shooters (vertical from top or horizontal in upper half)
+
+No random movement, no shooting modes, no Rushers
+
+Rewards: none
+
+Number on screen: unlimited
+
+Type B — Original Elite Shooter
+
+Spawn condition: every 30 kills (as pre-300 rules)
+
+Behavior: random movement + shooting modes
+
+Rewards: power-up + extra life
+
+Number on screen: unlimited
+
+4️⃣ Difficulty Alerts (On-Screen Messages)
+
+After 100 kills:
+
+Display large text at bottom: "The enemies are getting angrier!!!"
+
+After 150 kills:
+
+Display: "More angry Jelly are coming"
+
+Post-300 kills:
+
+Display: "Behold! Here is the real Angry Horde!"
+
+Display style: large, prominent, temporary but noticeable, does not block gameplay
+
+
+Design Constraints
+
+Maintain modular logic for:
+
+Type A vs Type B elites
+
+Spawn frequency scaling
+
+Max elite counts per stage
+
+Alerts are non-blocking, rendered on bottom of canvas
+
+Rushers spawned by Type B elites follow original rules
+
+Player collision, power-up, and extra-life logic remain unchanged
+
+Enemy density caps for early game (<10 kills) still enforced
+
+Spawn positions respect upper-half screen restriction for horizontal spawns
+
+7️⃣ Output Requirements
+
+Update all enemy spawning, elite logic, max counts, and difficulty alerts
+
+Briefly explain:
+
+How max simultaneous elites are enforced per stage
+
+How Type A and Type B elites are differentiated
+
+How difficulty alert messages are triggered and displayed
+
+How spawn rate scaling and enemy caps are applied
+
+v0.2 ***********************************************************************
+1️⃣ Entering Debug Mode
+
+Activation:
+
+Game is paused
+
+Press Enter on keyboard
+
+Debug mode toggles on/off
+
+2️⃣ Debug Mode Features
+
+On-screen indicator
+
+Display text: "DEBUG MODE"
+
+Position: top-right corner
+
+Blinks or flashes to be noticeable
+
+Player Invincibility
+
+While debug mode is active: player cannot take damage
+
+Blink / invincibility logic does not interfere
+
+Manipulate Enemy Kill Count
+
+While in debug mode:
+
+Typing a number + Enter sets the current enemy kills to that value
+
+This triggers enemy progression rules immediately (spawn rates, elite spawning, difficulty alerts, etc.)
+
+3️⃣ Design Constraints
+
+Debug mode cannot break existing gameplay loops
+
+All changes are instant but reversible (toggle off to resume normal behavior)
+
+Debug input only active while paused
+
+Maintain all existing collision, power-ups, and elite rules
+
+Visual debug text should not interfere with other UI elements
+
+4️⃣ Output Requirements
+
+Update only pause menu / input / debug logic
+
+Briefly explain:
+
+How debug mode toggling is implemented
+
+How player invincibility is enforced
+
+How number + Enter updates enemy kill count
