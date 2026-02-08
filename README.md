@@ -2,6 +2,7 @@ No single line of code is written by hand. All projects under this folder is ent
 
 Prompts fed to coding models are also AI-generated.
 
-Workflow: feaure/ideas -> chatmodels (eg. chatGPT) -> prompts
+Workflow: 
+          feaure/ideas -> chatmodels (eg. chatGPT) -> prompts
 
           prompts -> coding AI IDEs (eg. Trae, Cursor) -> working code
