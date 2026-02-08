@@ -35,7 +35,7 @@ A compact HTML5 canvas arcade shooter built with plain ES6 and the DOM. Fixed-si
 - Player shoots upward; bullets collide with enemies (AABB).
 - Enemies spawn from the top and move downward.
 - Score increases by 1 per destroyed enemy.
-- Player has 3 lives, shown as red hearts in the top-left.
+- Player has 5 lives, shown as red hearts in the top-left.
 - Brief invincibility with blinking after taking damage.
 - Game states: Intro, Help, Playing, Paused, Confirm End, Game Over.
 - Pause menu: Continue, Restart, End Game (with confirmation).
@@ -67,6 +67,20 @@ A compact HTML5 canvas arcade shooter built with plain ES6 and the DOM. Fixed-si
   - Shooters spawning from sides clamp Y to the upper half of the canvas.
   - Top-down Shooters spawn above the top edge (enter from the upper half).
 
+## Difficulty Levels
+- Stage thresholds:
+  - Stage 1 (≥100 kills): faster spawn cadence for normal waves.
+  - Stage 2 (≥150 kills): allows up to 3 Type B elites at once.
+  - Stage 3 (≥300 kills): dual-elite era (Type A replacement + unlimited Type B).
+- Alerts:
+  - At 100 kills: "The enemies are getting angrier!!!"
+  - At 150 kills: "More angry Jelly are coming"
+  - At 300 kills: "Behold! Here is the real Angry Horde!"
+- Alert UI:
+  - Large text at the bottom of the screen.
+  - Bright red color and visible shadow.
+  - Display duration: 2 seconds; a new alert replaces any active one.
+
 ## Enemy Types
 - Shooter:
   - HP 150; moves down (or horizontally, depending on mode); fires aimed bullets.
@@ -89,6 +103,23 @@ A compact HTML5 canvas arcade shooter built with plain ES6 and the DOM. Fixed-si
   - This is state-based and not modulo-based.
 - Elite spawn bounds:
   - Elite spawns in the upper half of the canvas.
+- Max concurrent Type B elites by stage:
+  - Pre-150 kills: up to 1
+  - 150–299 kills: up to 3
+  - ≥300 kills: unlimited
+- Dual Elite system at ≥300 kills:
+  - Type A (Replacement): replaces Shooters in normal waves; moves like Shooters; no power-up or extra life rewards; unlimited.
+  - Type B (Original): random movement + shooting modes; guaranteed power-up and +1 life on defeat; unlimited.
+
+## Enemy Spawn Details
+- Early density caps: <5 kills cap 2; <10 kills cap 5; Rushers and elites ignore the cap.
+- Spawn cadence:
+  - Base rate early game.
+  - Faster from ≥100 kills (Stage 1).
+- Post-300 kills:
+  - Normal waves no longer produce regular Shooters; they produce Type A elites instead.
+  - Rushers continue to appear from elite actions; normal wave rusher lines are suppressed during the Type A replacement path.
+- Spawn bounds are centralized and enforced in spawner logic for fairness.
 
 ## Power-Ups
 - Categories: Spread, Damage, Speed.
@@ -102,3 +133,16 @@ A compact HTML5 canvas arcade shooter built with plain ES6 and the DOM. Fixed-si
   - Spread: adds additional bullets in a cone.
   - Damage: +50 per level to player bullet damage.
   - Speed: +100 per level to player bullet speed.
+
+## Debug Mode
+- Activation:
+  - Pause the game (P or Esc).
+  - Press D to arm debug input; press Enter to toggle Debug Mode.
+  - While active and paused, type digits + Enter to set total kills instantly.
+- Features:
+  - On-screen blinking "DEBUG MODE" indicator (top-right).
+  - Player invincibility (no damage taken).
+  - Immediate application of progression effects when kills are set.
+- Scoring:
+  - High score updates are disabled while Debug Mode is active.
+  - High score resumes normally after Debug Mode is turned off.

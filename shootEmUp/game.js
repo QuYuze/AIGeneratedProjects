@@ -190,6 +190,7 @@ function saveHighScoreSafe(n) {
   } catch (_) {}
 }
 function updateHighScoreIfNeeded() {
+  if (game.debugMode) return;
   if (game.score > game.highScore) {
     game.highScore = game.score;
     saveHighScoreSafe(game.highScore);
@@ -1438,7 +1439,7 @@ function updateExplosions(dt) {
 function updateExtraLifeMessage(dt) {
   game.extraLifeMessageTimer = Math.max(0, game.extraLifeMessageTimer - dt);
 }
-function triggerDifficultyAlert(text, duration = 3.0) {
+function triggerDifficultyAlert(text, duration = 2.0) {
   game.alertText = text;
   game.alertTimer = duration;
 }
@@ -1450,10 +1451,10 @@ function renderDifficultyAlert() {
   ctx.save();
   ctx.textAlign = 'center';
   ctx.font = 'bold 26px system-ui, sans-serif';
-  ctx.fillStyle = '#ff6';
+  ctx.fillStyle = '#f33';
   ctx.strokeStyle = '#000';
   ctx.lineWidth = 3;
-  ctx.shadowColor = '#f90';
+  ctx.shadowColor = '#900';
   ctx.shadowBlur = 16;
   const y = canvas.height - 24;
   ctx.fillText(game.alertText, canvas.width / 2, y);

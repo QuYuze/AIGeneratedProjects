@@ -135,7 +135,7 @@ Activation:
 
 Game is paused
 
-Press Enter on keyboard
+keyboard enter d then Enter on keyboard
 
 Debug mode toggles on/off
 
@@ -186,3 +186,56 @@ How debug mode toggling is implemented
 How player invincibility is enforced
 
 How number + Enter updates enemy kill count
+
+v0.3****************************************************************************************
+Prompt — Difficulty Alert & Debug Mode Polishing (Canvas Shoot ’Em Up)
+
+Update difficulty alerts and debug mode behavior for better gameplay clarity and testing safety.
+
+1️⃣ Difficulty Alert Tweaks
+
+Display duration: 2 seconds (instead of previous shorter flash)
+
+Color: bright red (clearly visible against game background)
+
+Position: bottom of the screen (unchanged)
+
+Behavior:
+
+Triggered at kill thresholds (100, 150, 300) as previously defined
+
+Multiple alerts do not overlap; new alert replaces previous if still on screen
+
+2️⃣ Debug Mode Scoring Rules
+
+High score exclusion:
+
+When debug mode is active, the current session does not affect high score tracking
+
+Once debug mode is deactivated, normal scoring resumes
+
+Other debug features remain unchanged:
+
+Player invincibility
+
+Flashing "DEBUG MODE" indicator on top-right
+
+Typing number + Enter changes enemy kills
+
+3️⃣ Design Constraints
+
+Alerts must remain non-blocking and not interfere with other UI or gameplay
+
+High score system must ignore debug-mode kills without affecting stored normal high score
+
+All other gameplay mechanics, collision, and progression remain unaffected
+
+4️⃣ Output Requirements
+
+Update only difficulty alert display logic and debug mode scoring logic
+
+Briefly explain:
+
+How alert flash timing and color are applied
+
+How debug mode is excluded from high score
