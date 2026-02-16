@@ -239,3 +239,110 @@ Briefly explain:
 How alert flash timing and color are applied
 
 How debug mode is excluded from high score
+
+v0.4 ******************************************************************************************
+1️⃣ Power-Up Core Visuals
+
+Each power-up should visually consist of three layered elements:
+
+A. Glowing Blue Aura (Outer Layer)
+
+A circular blue glow surrounding the power-up
+
+Glow should:
+
+Pulse / blink continuously (smooth fade in/out)
+
+Be slightly larger than the pickup itself
+
+Use semi-transparent blue (rgba with alpha)
+
+Implement using:
+
+Canvas shadow blur, OR
+
+Animated alpha value over time
+
+B. Power-Up Body (Middle Layer)
+
+The power-up itself is a colored cube
+
+Cube color depends on category:
+
+Bullet amount → distinct color
+
+Damage → distinct color
+
+Bullet speed → distinct color
+
+Cube should:
+
+Slightly rotate or bob vertically
+
+Stay centered inside the glow
+
+C. Gold Dollar Sign (Top Layer)
+
+A gold $ symbol rendered on top of the cube
+
+Color:
+
+Gold / yellow (#FFD700 or similar)
+
+Style:
+
+Slight outline or shadow for readability
+
+Always facing the camera (no rotation)
+
+Position:
+
+Centered on the cube
+
+Drawn last so it’s always visible
+
+2️⃣ Animation Requirements
+
+Glow:
+
+Pulses continuously (sin / cosine or timer-based)
+
+Cube:
+
+Gentle floating motion OR slow rotation
+
+All animations:
+
+Time-based (not frame-based)
+
+Independent of game speed or pause state (pause freezes animation)
+
+3️⃣ Design Constraints
+
+No gameplay or drop-rate logic changes
+
+Power-up hitbox remains unchanged
+
+Effects must be lightweight (Canvas-friendly)
+
+Works for all three power-up categories
+
+Clear visibility even during heavy combat
+
+4️⃣ Output Requirements
+
+Update only power-up rendering logic
+
+Briefly explain:
+
+How glow pulsing works
+
+How cube + dollar sign layers are drawn
+
+How animations are paused when game is paused
+
+v0.5**************************
+change power ups to rectangle shape with pulse effect and exiting distinct color logics. on top of the rectangle, have write text "Power Up"
+change text power up to yellow color
+text is still black, is this due to black backgriund interference?
+now make the rectangle of the power ups larger

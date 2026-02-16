@@ -1020,16 +1020,75 @@ class PowerUp {
     this.category = category;
     this.speed = 40;
     this.color = category === 'spread' ? '#6cf' : category === 'damage' ? '#f96' : '#9f6';
+    this.t = 0;
+    this.glowColor = category === 'spread'
+      ? 'rgba(102,204,255,0.75)'
+      : category === 'damage'
+      ? 'rgba(255,153,102,0.75)'
+      : 'rgba(153,255,102,0.75)';
   }
   update(dt) {
     this.y += this.speed * dt;
+    this.t += dt;
   }
   offscreen() {
     return this.y > canvas.height + this.h;
   }
   draw(ctx) {
+    const cx = this.x;
+    const cyBase = this.y;
+    const bob = Math.sin(this.t * 2.2) * 2.0;
+    const cy = cyBase + bob;
+    const pulse = 0.85 + 0.15 * (0.5 + 0.5 * Math.sin(this.t * 3.2));
+    const scale = 1.0 + 0.06 * (0.5 + 0.5 * Math.sin(this.t * 2.4));
+    const bodyW = this.w * 1.8;
+    const bodyH = this.h * 1.8;
+
+    // Rectangular glow aura (outer)
+    ctx.save();
+    ctx.globalAlpha = 0.5 * pulse;
+    ctx.shadowColor = this.glowColor;
+    ctx.shadowBlur = 18;
     ctx.fillStyle = this.color;
-    ctx.fillRect(this.x - this.w / 2, this.y - this.h / 2, this.w, this.h);
+    const gw = bodyW * 1.15;
+    const gh = bodyH * 1.15;
+    ctx.fillRect(cx - gw / 2, cy - gh / 2, gw, gh);
+    ctx.restore();
+
+    // Body rectangle with pulse
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.scale(scale, scale);
+    ctx.shadowColor = this.glowColor;
+    ctx.shadowBlur = 12;
+    ctx.fillStyle = this.color;
+    ctx.fillRect(-bodyW / 2, -bodyH / 2, bodyW, bodyH);
+    ctx.restore();
+
+    // Text overlay: "Power Up"
+    ctx.save();
+    const textPulse = 0.95 + 0.05 * (0.5 + 0.5 * Math.sin(this.t * 4.0));
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.font = 'bold 18px system-ui, sans-serif';
+    // Halo pass
+    ctx.globalAlpha = 0.45;
+    ctx.fillStyle = '#FFD700';
+    ctx.strokeStyle = '#FFEA00';
+    ctx.lineWidth = 2;
+    ctx.shadowColor = 'rgba(255,215,0,0.85)';
+    ctx.shadowBlur = 14;
+    ctx.fillText('Power Up', cx, cy);
+    ctx.strokeText('Power Up', cx, cy);
+    // Crisp pass
+    ctx.globalAlpha = textPulse;
+    ctx.shadowBlur = 0;
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = '#6b3f00';
+    ctx.fillStyle = '#FFD700';
+    ctx.fillText('Power Up', cx, cy);
+    ctx.strokeText('Power Up', cx, cy);
+    ctx.restore();
   }
 }
 
